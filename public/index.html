@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<div id="root"></div>
+<link rel="stylesheet" href="/src/App.css" />
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" />
+<link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Erfan Azimi</title>
+  <meta name="description" content="Personal Site ">
+  <link rel="shortcut icon" type="image/ico" href="https://s6.uupload.ir/files/eicon_ae3z.png">
+  <script>
+    window.onscroll = function () {
+      updateProgressBar();
+    };
+
+    function updateProgressBar() {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("myBar").style.width = scrolled + "%";
+    }
+  </script>
+</head>
+
+<body>
+  <!-- progress bar -->
+  <div class="progress__container">
+    <div class="progress__bar" id="myBar"></div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader"></div>
+    <p class="loading-text"></p>
+  </div>
+
+  <!-- Your page content -->
+  <div id="page-content">
+    <!-- Your actual website content goes here -->
+  </div>
+
+  <script>
+    // Minimum display time (3 seconds)
+    const MIN_LOAD_TIME = 3000;
+    const loadStartTime = Date.now();
+
+    // Function to reveal content
+    function revealContent() {
+      const loadTime = Date.now() - loadStartTime;
+      const remainingTime = Math.max(0, MIN_LOAD_TIME - loadTime);
+
+      setTimeout(() => {
+        document.body.classList.add("loaded");
+
+        // Remove loading screen from DOM after transition
+        setTimeout(() => {
+          const loadingScreen = document.getElementById("loading-screen");
+          if (loadingScreen) loadingScreen.remove();
+        }, 500);
+      }, remainingTime);
+    }
+
+    // Track all critical resources
+    const criticalResources = [
+      ...document.querySelectorAll('link[rel="stylesheet"]'),
+      ...document.querySelectorAll("script[src]"),
+      ...document.querySelectorAll(
+        'img[loading="eager"], img:not([loading])'
+      ), // Track visible images
+    ];
+
+    let resourcesLoaded = 0;
+
+    // Resource loaded handler
+    function handleResourceLoad() {
+      resourcesLoaded++;
+
+      // If all critical resources loaded OR window loaded
+      if (
+        resourcesLoaded >= criticalResources.length ||
+        document.readyState === "complete"
+      ) {
+        revealContent();
+      }
+    }
+
+    // Set up resource tracking
+    criticalResources.forEach((resource) => {
+      if (resource.tagName === "LINK" && resource.rel === "stylesheet") {
+        resource.onload = handleResourceLoad;
+        resource.onerror = handleResourceLoad;
+      } else if (resource.tagName === "SCRIPT") {
+        resource.onload = handleResourceLoad;
+        resource.onerror = handleResourceLoad;
+      } else if (resource.tagName === "IMG") {
+        if (resource.complete) {
+          handleResourceLoad();
+        } else {
+          resource.addEventListener("load", handleResourceLoad);
+          resource.addEventListener("error", handleResourceLoad);
+        }
+      }
+    });
+
+    // Fallback event listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      if (resourcesLoaded >= criticalResources.length) {
+        revealContent();
+      }
+    });
+
+    window.addEventListener("load", revealContent);
+
+    // Final fallback - in case something goes wrong
+    setTimeout(revealContent, 10000); // Max 10 seconds
+  </script>
+</body>
+
+</html>
