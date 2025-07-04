@@ -6,7 +6,7 @@ React.js
 
 Embla Carousel for project slider
 
-CSS Modules / Styled-Components / CSS Variable /React Hook
+CSS Modules / Styled-Components / CSS Variable 
 
 Git for version control
 
