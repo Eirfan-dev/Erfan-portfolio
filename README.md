@@ -4,7 +4,7 @@ Welcome to my personal portfolio! 🎨 Built with React and modern web technolog
 🔧 Technologies Used
 React.js
 
-Swiper.js for project slider
+Embla Carousel for project slider
 
 CSS Modules / Tailwind / Styled-Components (customize based on what you use)
 
