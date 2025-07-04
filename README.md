@@ -6,7 +6,7 @@ React.js
 
 Embla Carousel for project slider
 
-CSS Modules / Tailwind / Styled-Components (customize based on what you use)
+CSS Modules / Styled-Components / CSS Variable /React Hook
 
 Git for version control
 
